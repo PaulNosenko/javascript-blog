@@ -1,10 +1,33 @@
 'use strict';
 
-const allTitlesLinks = document.querySelectorAll('.titles a');
+generateTitleLinks();
 
-allTitlesLinks.forEach((titleLink) => {
-    titleLink.addEventListener('click', titleClickHandler);
-});
+function generateTitleLinks() {
+    document.querySelector('.list.titles').innerHTML = '';
+
+    const allPosts = [...document.querySelectorAll('.posts .post')];
+
+    const allPostsInfo = allPosts.map((post) => {
+        return [
+            post.getAttribute('id'),
+            post.querySelector('.post-title').innerHTML
+        ];
+    });
+
+    const newLinkELements = allPostsInfo.map(([id, title]) => {
+        return '<li><a href="#' + id + '"><span>' + title + '</span></a></li>';
+    });
+
+    newLinkELements.forEach((newLink) => {
+        document.querySelector('.list.titles').insertAdjacentHTML('beforeend', newLink);
+    });
+
+    //having removed old and generated the new links we need to add event listeners to them
+    const allTitlesLinks = document.querySelectorAll('.titles a');
+    allTitlesLinks.forEach((titleLink) => {
+        titleLink.addEventListener('click', titleClickHandler);
+    });
+}
 
 function titleClickHandler(event) {
     event.preventDefault();
@@ -27,10 +50,10 @@ function selectTitle(currentTitle) {
 }
 
 function selectPostById(postId) {
-    
+
     //make active posts unactive 
     const activePosts = document.querySelectorAll('.posts .post.active');
-    
+
     activePosts.forEach((post) => {
         post.classList.remove('active');
     });
