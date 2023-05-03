@@ -15,7 +15,7 @@ function generateTitleLinks() {
     });
 
     const newLinkELements = allPostsInfo.map(([id, title]) => {
-        return '<li><a href="#' + id + '"><span>' + title + '</span></a></li>';
+        return `<li><a href="#${id}"><span>${title}</span></a></li>`;
     });
 
     newLinkELements.forEach((newLink) => {
@@ -64,3 +64,9 @@ function selectPostById(postId) {
     serachedPost.classList.add('active');
 }
 
+function generateTags() {
+    
+
+}
+
+generateTags();
