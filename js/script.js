@@ -2,10 +2,10 @@
 
 generateTitleLinks();
 
-function generateTitleLinks() {
+function generateTitleLinks(customSelector = '') {
     document.querySelector('.list.titles').innerHTML = '';
 
-    const allPosts = [...document.querySelectorAll('.posts .post')];
+    const allPosts = [...document.querySelectorAll(`.posts .post${customSelector}`)];
 
     const allPostsInfo = allPosts.map((post) => {
         return [
@@ -65,8 +65,46 @@ function selectPostById(postId) {
 }
 
 function generateTags() {
-    
+    const articles = document.querySelectorAll('.posts .post');
 
+    articles.forEach((article) => {
+        const articleTags = article.getAttribute('data-tags').split(' ');
+        const currentArticleTagsListEl = article.querySelector('.post-tags .list');
+
+        articleTags.forEach((tag) => {
+            const newLink = `<li><a href="#tag-${tag}">${tag}</a></li>`
+            currentArticleTagsListEl.insertAdjacentHTML('beforeend', newLink);
+        });
+    });
 }
 
 generateTags();
+
+function tagClickHandler(event) {
+    event.preventDefault();
+    const clickedElement = this;
+    const href = clickedElement.getAttribute('href');
+    const tag = href.replace('#tag-', '');
+    const allActiveTagLinks = document.querySelectorAll('a.active[href^="#tag-"]')
+
+    allActiveTagLinks.forEach((activeTagLink) => {
+        activeTagLink.classList.remove('active');
+    });
+
+    const allSameHrefLinks = document.querySelectorAll('a[href="' + href + '"]');
+
+    allSameHrefLinks.forEach(link => {
+        link.classList.add('active');
+    });
+    generateTitleLinks('[data-tags~="' + tag + '"]');
+}
+
+function addClickListenersToTags() {
+    const allTagLinks = document.querySelectorAll('a[href^="#tag-"]');
+    
+    allTagLinks.forEach(link => {
+        link.addEventListener('click', tagClickHandler);
+    })
+}
+
+addClickListenersToTags();
