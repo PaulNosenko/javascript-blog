@@ -108,3 +108,36 @@ function addClickListenersToTags() {
 }
 
 addClickListenersToTags();
+
+//authors
+function generateAuthors() {
+    const articles = document.querySelectorAll('.posts .post');
+    
+    articles.forEach(article => {
+        const authorName = article.getAttribute('data-author');
+        const authorWrapperEl = article.querySelector('.post-author');
+        const authorLink = `<a href="#author-${authorName}">${authorName}</a>`
+
+        authorWrapperEl.innerHTML = authorLink;
+    });
+}
+
+generateAuthors();
+
+function addClickListenersToAuthors() {
+    const allAuthorLinks = document.querySelectorAll('a[href^="#author-"]');
+    
+    allAuthorLinks.forEach(link => {
+        link.addEventListener('click', authorClickHandler);
+    })
+}
+
+function authorClickHandler(event) {
+    event.preventDefault();
+    const href = this.getAttribute('href');
+    const author = href.replace('#author-', '');
+
+    generateTitleLinks('[data-author="' + author + '"]');
+}
+
+addClickListenersToAuthors();
