@@ -137,7 +137,7 @@ function authorClickHandler(event) {
     const href = this.getAttribute('href');
     const author = href.replace('#author-', '');
 
-    generateTitleLinks('[data-author="' + author + '"]');
+    generateTitleLinks(`[data-author="${author}"]`);
 }
 
 addClickListenersToAuthors();
