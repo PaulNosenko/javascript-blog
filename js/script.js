@@ -72,7 +72,7 @@ function generateTags() {
         const currentArticleTagsListEl = article.querySelector('.post-tags .list');
 
         articleTags.forEach((tag) => {
-            const newLink = `<li><a href="#tag-${tag}">${tag}</a></li>`
+            const newLink = `<li><a href="#tag-${tag}">${tag}</a></li>`;
             currentArticleTagsListEl.insertAdjacentHTML('beforeend', newLink);
         });
     });
@@ -85,7 +85,7 @@ function tagClickHandler(event) {
     const clickedElement = this;
     const href = clickedElement.getAttribute('href');
     const tag = href.replace('#tag-', '');
-    const allActiveTagLinks = document.querySelectorAll('a.active[href^="#tag-"]')
+    const allActiveTagLinks = document.querySelectorAll('a.active[href^="#tag-"]');
 
     allActiveTagLinks.forEach((activeTagLink) => {
         activeTagLink.classList.remove('active');
@@ -104,7 +104,7 @@ function addClickListenersToTags() {
     
     allTagLinks.forEach(link => {
         link.addEventListener('click', tagClickHandler);
-    })
+    });
 }
 
 addClickListenersToTags();
@@ -116,7 +116,7 @@ function generateAuthors() {
     articles.forEach(article => {
         const authorName = article.getAttribute('data-author');
         const authorWrapperEl = article.querySelector('.post-author');
-        const authorLink = `<a href="#author-${authorName}">${authorName}</a>`
+        const authorLink = `<a href="#author-${authorName}">${authorName}</a>`;
 
         authorWrapperEl.innerHTML = authorLink;
     });
@@ -129,7 +129,7 @@ function addClickListenersToAuthors() {
     
     allAuthorLinks.forEach(link => {
         link.addEventListener('click', authorClickHandler);
-    })
+    });
 }
 
 function authorClickHandler(event) {
@@ -141,3 +141,13 @@ function authorClickHandler(event) {
 }
 
 addClickListenersToAuthors();
+
+function selectFirstArticle() {
+    const firstArticle = document.querySelector('.posts .post');
+    firstArticle.classList.add('active')
+
+    const firstLink = document.querySelector('.list.titles a');
+    firstLink.classList.add('active');
+}
+
+selectFirstArticle();
