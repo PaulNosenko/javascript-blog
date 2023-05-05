@@ -65,6 +65,7 @@ function selectPostById(postId) {
 }
 
 function generateTags() {
+    const allTags = {};
     const articles = document.querySelectorAll('.posts .post');
 
     articles.forEach((article) => {
@@ -74,8 +75,39 @@ function generateTags() {
         articleTags.forEach((tag) => {
             const newLink = `<li><a href="#tag-${tag}">${tag}</a></li>`;
             currentArticleTagsListEl.insertAdjacentHTML('beforeend', newLink);
+
+            if (!allTags.hasOwnProperty(tag)) {
+                allTags[tag] = 1;
+            } else {
+                allTags[tag] = allTags[tag] + 1;
+            }
         });
     });
+
+    const tagList = document.querySelector('.tags.list');
+
+    const tagsParams = calculateTagsParams(allTags);
+
+    let allTagsHTML = '';
+    Object.entries(allTags).forEach(([tagName, amountOfTimesUsed]) => {
+        const currentClassName = calculateTagClass(amountOfTimesUsed, tagsParams);
+        allTagsHTML += `<li><a href="#tag-${tagName}" class="${currentClassName}">${tagName}</a></li>`;
+    });
+
+    tagList.innerHTML = allTagsHTML;
+}
+
+function calculateTagsParams(tags) {
+    return {
+        min: Math.min(...Object.values(tags)),
+        max: Math.max(...Object.values(tags))
+    }
+}
+
+function calculateTagClass(amountOfTimesUsed, tagsParams) {
+    const maxRange = tagsParams.max - tagsParams.min + 1;
+    const classIdentifier = Math.round((5*amountOfTimesUsed)/maxRange);
+    return `tag-size-${classIdentifier}`;
 }
 
 generateTags();
@@ -101,7 +133,7 @@ function tagClickHandler(event) {
 
 function addClickListenersToTags() {
     const allTagLinks = document.querySelectorAll('a[href^="#tag-"]');
-    
+
     allTagLinks.forEach(link => {
         link.addEventListener('click', tagClickHandler);
     });
@@ -112,7 +144,7 @@ addClickListenersToTags();
 //authors
 function generateAuthors() {
     const articles = document.querySelectorAll('.posts .post');
-    
+
     articles.forEach(article => {
         const authorName = article.getAttribute('data-author');
         const authorWrapperEl = article.querySelector('.post-author');
@@ -126,7 +158,7 @@ generateAuthors();
 
 function addClickListenersToAuthors() {
     const allAuthorLinks = document.querySelectorAll('a[href^="#author-"]');
-    
+
     allAuthorLinks.forEach(link => {
         link.addEventListener('click', authorClickHandler);
     });
