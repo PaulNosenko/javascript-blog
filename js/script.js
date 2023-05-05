@@ -143,15 +143,31 @@ addClickListenersToTags();
 
 //authors
 function generateAuthors() {
+    const allAuthors = {};
     const articles = document.querySelectorAll('.posts .post');
 
     articles.forEach(article => {
         const authorName = article.getAttribute('data-author');
         const authorWrapperEl = article.querySelector('.post-author');
         const authorLink = `<a href="#author-${authorName}">${authorName}</a>`;
-
         authorWrapperEl.innerHTML = authorLink;
+        
+        const articleAuthor = article.getAttribute('data-author');
+        
+        if (!allAuthors.hasOwnProperty(articleAuthor)) {
+            allAuthors[articleAuthor] = 1;
+        } else {
+            allAuthors[articleAuthor] = allAuthors[articleAuthor] + 1;
+        }
     });
+
+    const authorsList = document.querySelector('.list.authors');
+    let allTagsHTML = '';
+    Object.entries(allAuthors).forEach(([authorName, amountOfTimesUsed]) => {
+        allTagsHTML += `<li><a href="#author-${authorName}">${authorName} <span>(${amountOfTimesUsed})</span> </a></li>`;
+    });
+
+    authorsList.innerHTML = allTagsHTML;
 }
 
 generateAuthors();
