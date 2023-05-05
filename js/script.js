@@ -144,7 +144,7 @@ addClickListenersToAuthors();
 
 function selectFirstArticle() {
     const firstArticle = document.querySelector('.posts .post');
-    firstArticle.classList.add('active')
+    firstArticle.classList.add('active');
 
     const firstLink = document.querySelector('.list.titles a');
     firstLink.classList.add('active');
