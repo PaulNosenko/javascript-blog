@@ -74,6 +74,25 @@ body {
 .list .active {
   font-weight: bold;
 }
+.list a.tag-size-5 {
+  font-size: 22px;
+}
+.list a.tag-size-4 {
+  font-size: 20px;
+}
+.list a.tag-size-3 {
+  font-size: 18px;
+}
+.list a.tag-size-2 {
+  font-size: 16px;
+}
+.list a.tag-size-1 {
+  font-size: 14px;
+}
+.list.tags li {
+  display: inline-block;
+  padding-right: 5px;
+}
 
 .list-horizontal li {
   display: inline-block;
