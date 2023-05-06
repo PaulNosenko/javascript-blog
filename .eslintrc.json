@@ -18,15 +18,18 @@
         "quotes": [
             "error",
             "single",
-            {"allowTemplateLiterals": true}
-        ],
-        "semi": [
-            "error",
-            "always"
+            {
+                "allowTemplateLiterals": true
+            }
         ],
         "no-console": [
             "off"
         ],
-        "no-prototype-builtins": ["off"]
+        "globals": {
+            "Handlebars": false
+        },
+        "no-prototype-builtins": [
+            "off"
+        ]
     }
 }

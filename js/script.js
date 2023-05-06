@@ -1,5 +1,11 @@
 'use strict';
 
+const templates = {
+    articleLink: Handlebars.compile(document.querySelector('#template-article-link').innerHTML),
+    articleTagLink: Handlebars.compile(document.querySelector('#template-article-tag-link').innerHTML),
+    articleAuthorLink: Handlebars.compile(document.querySelector('#template-article-author-link').innerHTML)
+}
+
 generateTitleLinks();
 
 function generateTitleLinks(customSelector = '') {
@@ -15,7 +21,9 @@ function generateTitleLinks(customSelector = '') {
     });
 
     const newLinkELements = allPostsInfo.map(([id, title]) => {
-        return `<li><a href="#${id}"><span>${title}</span></a></li>`;
+        const linkHTMLData = { id, title };
+        const linkHTML = templates.articleLink(linkHTMLData);
+        return linkHTML;
     });
 
     newLinkELements.forEach((newLink) => {
@@ -73,7 +81,8 @@ function generateTags() {
         const currentArticleTagsListEl = article.querySelector('.post-tags .list');
 
         articleTags.forEach((tag) => {
-            const newLink = `<li><a href="#tag-${tag}">${tag}</a></li>`;
+            const linkHTMLData = { tag };
+            const newLink = templates.articleTagLink(linkHTMLData);
             currentArticleTagsListEl.insertAdjacentHTML('beforeend', newLink);
 
             if (!allTags.hasOwnProperty(tag)) {
@@ -106,7 +115,7 @@ function calculateTagsParams(tags) {
 
 function calculateTagClass(amountOfTimesUsed, tagsParams) {
     const maxRange = tagsParams.max - tagsParams.min + 1;
-    const classIdentifier = Math.round((5*amountOfTimesUsed)/maxRange);
+    const classIdentifier = Math.round((5 * amountOfTimesUsed) / maxRange);
     return `tag-size-${classIdentifier}`;
 }
 
@@ -149,11 +158,14 @@ function generateAuthors() {
     articles.forEach(article => {
         const authorName = article.getAttribute('data-author');
         const authorWrapperEl = article.querySelector('.post-author');
-        const authorLink = `<a href="#author-${authorName}">${authorName}</a>`;
+
+        const linkHTMLData = { authorName };
+        const authorLink = templates.articleAuthorLink(linkHTMLData);
+
         authorWrapperEl.innerHTML = authorLink;
-        
+
         const articleAuthor = article.getAttribute('data-author');
-        
+
         if (!allAuthors.hasOwnProperty(articleAuthor)) {
             allAuthors[articleAuthor] = 1;
         } else {
