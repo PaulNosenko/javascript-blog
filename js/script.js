@@ -3,7 +3,9 @@
 const templates = {
     articleLink: Handlebars.compile(document.querySelector('#template-article-link').innerHTML),
     articleTagLink: Handlebars.compile(document.querySelector('#template-article-tag-link').innerHTML),
-    articleAuthorLink: Handlebars.compile(document.querySelector('#template-article-author-link').innerHTML)
+    articleAuthorLink: Handlebars.compile(document.querySelector('#template-article-author-link').innerHTML),
+    tagCloudLink: Handlebars.compile(document.querySelector('#template-tag-cloud-link').innerHTML),
+    authorLinks: Handlebars.compile(document.querySelector('#template-author-links').innerHTML)
 }
 
 generateTitleLinks();
@@ -97,13 +99,15 @@ function generateTags() {
 
     const tagsParams = calculateTagsParams(allTags);
 
-    let allTagsHTML = '';
+    const allTagsData = {tags: []};
     Object.entries(allTags).forEach(([tagName, amountOfTimesUsed]) => {
-        const currentClassName = calculateTagClass(amountOfTimesUsed, tagsParams);
-        allTagsHTML += `<li><a href="#tag-${tagName}" class="${currentClassName}">${tagName}</a></li>`;
+        allTagsData.tags.push({
+            tag: tagName,
+            className: calculateTagClass(amountOfTimesUsed, tagsParams)
+        });
     });
 
-    tagList.innerHTML = allTagsHTML;
+    tagList.innerHTML = templates.tagCloudLink(allTagsData);
 }
 
 function calculateTagsParams(tags) {
@@ -174,12 +178,17 @@ function generateAuthors() {
     });
 
     const authorsList = document.querySelector('.list.authors');
-    let allTagsHTML = '';
-    Object.entries(allAuthors).forEach(([authorName, amountOfTimesUsed]) => {
-        allTagsHTML += `<li><a href="#author-${authorName}">${authorName} <span>(${amountOfTimesUsed})</span> </a></li>`;
+    let authorLinks = {authors: []};
+    Object.entries(allAuthors).forEach(([authorName, amountOfArticles]) => {
+        authorLinks.authors.push({
+            authorName,
+            amountOfArticles
+        });
     });
 
-    authorsList.innerHTML = allTagsHTML;
+    console.error('authorLinks', authorLinks);
+
+    authorsList.innerHTML = templates.authorLinks(authorLinks);
 }
 
 generateAuthors();
