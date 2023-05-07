@@ -186,8 +186,6 @@ function generateAuthors() {
         });
     });
 
-    console.error('authorLinks', authorLinks);
-
     authorsList.innerHTML = templates.authorLinks(authorLinks);
 }
 
